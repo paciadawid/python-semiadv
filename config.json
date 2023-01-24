@@ -1,0 +1,7 @@
+{
+  "browser": "chrome",
+  "baseUrl": "https://automationexercise.com/",
+  "resolution": "900x1600",
+  "headless": false,
+  "timeout": 10
+}

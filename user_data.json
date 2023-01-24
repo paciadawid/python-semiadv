@@ -1,0 +1,14 @@
+{
+  "pl": {
+    "activeUser": {
+      "email": "seleniumremote@gmail.com",
+      "password": "tester"
+    },
+    "us": {
+      "activeUser": {
+        "email": "1@gmail.com",
+        "password": "tester1"
+      }
+    }
+  }
+}

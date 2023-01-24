@@ -2,11 +2,14 @@ import random
 import unittest
 
 from selenium import webdriver
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+
+from json_example import load_config
 
 
 class MyTestCase(unittest.TestCase):
@@ -17,8 +20,16 @@ class MyTestCase(unittest.TestCase):
     subcategory_filter_selector = (By.XPATH, "//div[@class='panel-collapse in']//li")
 
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-        self.driver.get("https://automationexercise.com/")
+        config = load_config()
+        options = ChromeOptions()
+        if config["headless"]:
+            options.add_argument("--headless")
+        if config["browser"] == "chrome":
+            self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+        if config["resolution"]:
+            self.driver.set_window_size(*config["resolution"].split("x"))
+
+        self.driver.get(config["baseUrl"])
         self.driver.find_element(*self.product_tab_selector).click()
         self.driver.refresh()
 
