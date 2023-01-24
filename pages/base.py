@@ -42,5 +42,10 @@ class BasePage:
         search_field.clear()
         search_field.send_keys(value)
 
+    def check_visibility(self, selector):
+        WebDriverWait(self.driver, self.config["timeout"]).until(EC.visibility_of_element_located(selector))
+
+
     def close_driver(self):
         self.driver.quit()
+        del self.driver
