@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from utils.json_example import load_config
+from utils.helper_functions import load_config
 
 
 class MyTestCase(unittest.TestCase):
