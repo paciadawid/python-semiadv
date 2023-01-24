@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
+from pages.home import HomePage
+from pages.login import LoginPage
+
 
 class MyTestCase(unittest.TestCase):
     product_tab_selector = (By.XPATH, "//*[@href='/products']")
@@ -18,28 +21,21 @@ class MyTestCase(unittest.TestCase):
     continue_shopping_button_selector = (By.CLASS_NAME, "btn-success")
     cart_tab_selector = (By.CLASS_NAME, "fa-shopping-cart")
     checkout_button_selector = (By.CLASS_NAME, "check_out")
-    email_btn = (By.XPATH, "//input[@data-qa='login-email']")
-    signup_btn = (By.XPATH, "//a[@href='/login']")
-    email_credential = "seleniumremote@gmail.com"
-    psw_credential = "tester"
-    psw_btn = (By.XPATH, "//input[@data-qa='login-password']")
-    login_btn = (By.XPATH, "//button[@data-qa='login-button']")
     total_amount_selector = (By.CLASS_NAME, "cart_total_price")
 
     def setUp(self) -> None:
         self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
         self.driver.get("https://automationexercise.com/")
-        self.driver.find_element(*self.product_tab_selector).click()
-        self.driver.refresh()
+
+        self.login_page = LoginPage(self.driver)
+        self.home_page = HomePage(self.driver)
+
+        self.home_page.close_ad()
 
     def test_total_amount_different_products(self):
-        self.driver.find_element(*self.signup_btn).click()
-        self.driver.find_element(*self.email_btn).send_keys(self.email_credential)
-        self.driver.find_element(*self.psw_btn).send_keys(self.psw_credential)
-        self.driver.find_element(*self.login_btn).click()
+        self.login_page.login_using_email_password("seleniumremote@gmail.com", "tester")
 
         self.driver.find_element(*self.product_tab_selector).click()
-
         search_field = self.driver.find_element(*self.search_product_field_selector)
         search_field.clear()
         search_field.send_keys("men tshirt")
